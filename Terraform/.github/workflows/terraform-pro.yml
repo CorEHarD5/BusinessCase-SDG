@@ -1,0 +1,29 @@
+name: Terraform Deployment - Pro
+
+on:
+  pull_request:
+    branches:
+      - pro
+
+jobs:
+  terraform-pro:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code to main and pro folder
+      uses: actions/checkout@v2
+
+    - uses: actions/checkout@v2
+      with:
+        path: pro
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Init and Apply in main and in pro folder
+      run: |
+        terraform init 
+        terraform apply -auto-approve main
+        cd pro
+        terraform init
+        terraform apply -auto-approve
